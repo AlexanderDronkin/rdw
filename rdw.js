@@ -412,7 +412,8 @@ hydra = {
 				this.add_telephone( telephone );
 				
 			}
-			
+		
+		// выводим требования для редактирования
 		desc = desc.replace( /\s([,\.]\s)/ig, "$1" );
 		desc = desc.replace( /!/g, '' );
 		desc = desc.replace( /•/g, '' ); 
@@ -445,6 +446,35 @@ hydra = {
 			} );
 	
 		}
+
+		// выводим регионы для редактирования
+		if ( $('*[name="major_sub_array[8][0]"]').length > 0 ) {
+			var desc_br = $('*[name="major_sub_array[8][0]"]').parent().text().replace( /^\n/, '' );
+
+			var desc = $('*[name="major_sub_array[8][0]"]').val();
+			desc = desc.replace( /!/g, '' ); 
+			desc = desc.replace( /•/g, '' ); 
+			desc = desc.replace( /&amp;#9642;[\s]?/gi, '' );
+			desc = desc.replace( /&#9642;[\s]?/gi, '' );
+			desc = desc.replace( /\n[\s]?[-–][\s]?/gi, "\n" );
+			desc = desc.replace( /^[\s]?[-–][\s]?/gi, "" );
+
+			desc = desc.replace( /^м[\n\s]Москва/i, '' ); 
+			desc_br = desc_br.replace( /^([\s]*?м[\n\s]*?Москва)/i, '<span style="color: #00f137"><b>$1</b></span>' ); 
+
+			desc_br = desc_br.replace( /\n/g, '<br>' );	
+			
+			$('*[name="major_sub_array[8][0]"]').parent().html( desc_br + '<textarea name="major_sub_array[8][0]" style="display: block; width: 100%; height: 60px; margin: 10px 0px;">'+desc+'</textarea>');
+		} else {
+			$('.major_id_class_label_8').parent().parent().find('dd ul').append( '<textarea name="major_sub_array[8][0]" style="display: block; width: 100%; height: 60px; margin: 10px 0px;"></textarea>' );
+		}
+		setTimeout( "$('textarea[name=\"major_sub_array[8][0]\"]').stop().animate( { height : $('textarea[name=\"major_sub_array[8][0]\"]')[0].scrollHeight } );", 100 );
+		
+		// фикс для попапа на редактирования условий
+		$('.major_id_class_label_20').click( function(){
+			if ( $('*[name="major_sub_array[20][0]"]').length > 0 )
+				setTimeout( "$('#minor_window_default textarea').val( $('*[name=\"major_sub_array[20][0]\"]').val() )", 500 );
+		} );
 		
 		// выводим условия для редактирования
 		if ( $('*[name="major_sub_array[20][0]"]').length > 0 ) {
