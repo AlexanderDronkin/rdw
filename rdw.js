@@ -12,7 +12,9 @@ hydra = {
 	
 	words : [ 'гражданство', 'рф', 'тел', 'пол', 'регистрация', 'снг', 'прописка', 'муж', 'жен', 'мужчины/женщины', 'женщина', 'женщины', 'возраст', 'студенты', 'студентов', 'молодой', 'рост', 'вес', 'внешность', 'украина', 'казахстан', 'армения', 'киргизия', 'снг', 'мужчины', 'мужчина', 'судимости', 'пенсионеров', 'студент', 'пенсионер', 'молодых', 'требования', 'обязанности', 'условия', 'проживание', 'телефон', 'телефону', 'телефоны', 'славянская', 'славянин', 'славянка', 'славяне', 'национальность', 'без лишнего веса', 'вахта', 'график ', '2/2', '5/2', '1/2', '1/3', '3/3', '30/15', '30/30', '60/30', 'сменный', 'частичная занятость', 'полная занятость', 'гибкий', 'выходного дня', 'плавающий', 'совмещение', 'удалённая работа', 'удаленная работа', 'личные качества', 'гражданин', 'граждане', 'укр', 'рб', 'молд', 'без говора', 'навыки', 'православный', 'православная', 'украины', 'молдовы', 'белоруссии', 'гражд', 'граждан', 'место жительства', 'женщин', 'мужчин', 'доб.', 'добавочный', 'пенсионеры', 'россиянин', 'проживающий', 'проживающая', 'отсутствие лишнего веса', 'права', 'прав', 'правами', 'категории', 'категория', 'водительское удостоверение', 'водительского удостоверения', 'водительским удостоверением', 'водительские', 'водительское', 'в\/у', 'кат', 'вод', 'россиянка', 'россияне' ],
     
-    w_list1 : [ 'требования к соискателю', 'основные требования', 'обязанности соискателя', 'должностные обязанности', 'условия', 'в обязанности входит', 'всему обучает заботливый бригадир', 'навыки', 'личные качества', 'требование:', 'требования: ', 'обязанности:', 'требование:' ],
+    w_list1 : [ 'требования к соискателю', 'основные требования', 'обязанности соискателя', 'должностные обязанности', 'условия', 'в обязанности входит', 'всему обучает заботливый бригадир', 'навыки', 'личные качества', 'требование', 'требования ', 'обязанности' ],
+	w_list2 : [ 'условия', 'мы предлагаем', 'прямой работодатель', 'возможность выбора одного из нескольких объектов работы', 'большой выбор вакансий в одном офисе' ],
+	w_list3 : [ 'график работы', 'график', 'гр.раб' ],
 
 	exclude : [ 'карьерный рост', 'тк рф', 'тк. рф' ],
 	
@@ -422,24 +424,31 @@ hydra = {
 		desc = desc.replace( /\.,/g, '.' );
 		desc = desc.replace( /\.{2}/g, '' );
 		desc = desc.replace( /,{2}/g, '' );
-		
-		desc = desc.replace( /[\"]/ig, '' );
+
 		desc = desc.replace( /&amp;#9642;[\s]?/gi, '' );
 		desc = desc.replace( /&#9642;[\s]?/gi, '' );
 		
 		desc = desc.replace( /\n[\s]?[-–][\s]?/gi, "\n" );
 		desc = desc.replace( /^[\s]?[-–][\s]?/gi, "" );
 		
-
 		for ( let i of this.w_list1 ) {
-			let expression = new RegExp( '('+i+')', 'gi' );
+			let expression = new RegExp( '('+i+':?)', 'gi' );
 
 			desc = desc.replace( expression, '' ); 
 			desc_old = desc_old.replace( expression, '<span style="color: #00f137"><b>$1</b></span>' ); 
 		}
 
 		desc = desc.replace( /[ ]{2,}/g, ' ' ); 
-
+		desc = desc.replace( /[\n]{2,}/g, "\n" ); 
+		desc = desc.replace( /\*/gi, '' ); 
+		desc_old = desc_old.replace( /\*/gi, '<span style="color: #00f137"><b>*</b></span>' ); 
+		desc = desc.replace( /&quot;/gi, '' ); 
+		desc_old = desc_old.replace( /\&quot;/gi, '<span style="color: #00f137"><b>&quot;</b></span>' ); 
+		desc = desc.replace( /&#34;/gi, '' ); 
+		desc_old = desc_old.replace( /\&#34;/gi, '<span style="color: #00f137"><b>&#34;</b></span>' ); 
+		desc = desc.replace( /[\"]/ig, '' );
+		
+		
 		if ( desc != desc_old.trim() ) {
 		
 			// старая версия
@@ -461,14 +470,24 @@ hydra = {
 		// выводим регионы для редактирования
 		if ( $('*[name="major_sub_array[8][0]"]').length > 0 ) {
 			var desc_br = $('*[name="major_sub_array[8][0]"]').parent().text().replace( /^\n/, '' );
-
 			var desc = $('*[name="major_sub_array[8][0]"]').val();
+
 			desc = desc.replace( /!/g, '' ); 
 			desc = desc.replace( /•/g, '' ); 
 			desc = desc.replace( /&amp;#9642;[\s]?/gi, '' );
 			desc = desc.replace( /&#9642;[\s]?/gi, '' );
 			desc = desc.replace( /\n[\s]?[-–][\s]?/gi, "\n" );
 			desc = desc.replace( /^[\s]?[-–][\s]?/gi, "" );
+
+			desc = desc.replace( /[ ]{2,}/g, ' ' ); 
+			desc = desc.replace( /[\n]{2,}/g, "\n" ); 
+			desc = desc.replace( /\*/gi, '' ); 
+			desc_br = desc_br.replace( /\*/gi, '<span style="color: #00f137"><b>*</b></span>' ); 
+			desc = desc.replace( /&quot;/gi, '' ); 
+			desc_br = desc_br.replace( /\&quot;/gi, '<span style="color: #00f137"><b>&quot;</b></span>' ); 
+			desc = desc.replace( /&#34;/gi, '' ); 
+			desc_br = desc_br.replace( /\&#34;/gi, '<span style="color: #00f137"><b>&#34;</b></span>' ); 
+			desc = desc.replace( /[\"]/ig, '' );
 
 			desc = desc.replace( /^м[\n\s]Москва/i, '' ); 
 			desc_br = desc_br.replace( /^([\s]*?м[\n\s]*?Москва)/i, '<span style="color: #00f137"><b>$1</b></span>' ); 
@@ -481,18 +500,17 @@ hydra = {
 		}
 		setTimeout( "$('textarea[name=\"major_sub_array[8][0]\"]').stop().animate( { height : $('textarea[name=\"major_sub_array[8][0]\"]')[0].scrollHeight } );", 100 );
 		
-		// фикс для попапа на редактирования условий
-		$('.major_id_class_label_20').click( function(){
-			if ( $('*[name="major_sub_array[20][0]"]').length > 0 )
-				setTimeout( "$('#minor_window_default textarea').val( $('*[name=\"major_sub_array[20][0]\"]').val() )", 500 );
+		// фикс для попапа на редактирования региона
+		$('.major_id_class_label_8').click( function(){
+			if ( $('*[name="major_sub_array[8][0]"]').length > 0 ) 
+				setTimeout( "$('#minor_window_treeAdvanced textarea').val( $('*[name=\"major_sub_array[8][0]\"]').val() )", 500 );
 		} );
 		
 		// выводим условия для редактирования
 		if ( $('*[name="major_sub_array[20][0]"]').length > 0 ) {
 			var desc_br = $('*[name="major_sub_array[20][0]"]').parent().text().replace( /^\n/, '' );
-			desc_br = desc_br.replace( /\n/g, '<br>' );	
-	
 			var desc = $('*[name="major_sub_array[20][0]"]').val();
+
 			desc = desc.replace( /!/g, '' ); 
 			desc = desc.replace( /•/g, '' ); 
 			desc = desc.replace( /&amp;#9642;[\s]?/gi, '' );
@@ -500,6 +518,26 @@ hydra = {
 			desc = desc.replace( /\n[\s]?[-–][\s]?/gi, "\n" );
 			desc = desc.replace( /^[\s]?[-–][\s]?/gi, "" );
 			
+
+			for ( let i of this.w_list2 ) {
+				let expression = new RegExp( '('+i+':?)', 'gi' );
+
+				desc = desc.replace( expression, '' ); 
+				desc_br = desc_br.replace( expression, '<span style="color: #00f137"><b>$1</b></span>' ); 
+			}
+
+			desc = desc.replace( /[ ]{2,}/g, ' ' ); 
+			desc = desc.replace( /[\n]{2,}/g, "\n" ); 
+			desc = desc.replace( /\*/gi, '' ); 
+			desc_br = desc_br.replace( /\*/gi, '<span style="color: #00f137"><b>*</b></span>' ); 
+			desc = desc.replace( /&quot;/gi, '' ); 
+			desc_br = desc_br.replace( /\&quot;/gi, '<span style="color: #00f137"><b>&quot;</b></span>' ); 
+			desc = desc.replace( /&#34;/gi, '' ); 
+			desc_br = desc_br.replace( /\&#34;/gi, '<span style="color: #00f137"><b>&#34;</b></span>' ); 
+			desc = desc.replace( /[\"]/ig, '' );
+
+			desc_br = desc_br.replace( /\n/g, '<br>' );	
+
 			$('*[name="major_sub_array[20][0]"]').parent().html( desc_br + '<textarea name="major_sub_array[20][0]" style="display: block; width: 100%; height: 140px; margin: 10px 0px;">'+desc+'</textarea>');
 		} else {
 			$('.major_id_class_label_20').parent().parent().find('dd ul').append( '<textarea name="major_sub_array[20][0]" style="display: block; width: 100%; height: 140px; margin: 10px 0px;"></textarea>' );
@@ -515,10 +553,28 @@ hydra = {
 		// выводим график работы для редактирования
 		if ( $('*[name="major_sub_array[6][0]"]').length > 0 ) {
 			var desc_br = $('*[name="major_sub_array[6][0]"]').parent().text().replace( /^\n/, '' );
-			desc_br = desc_br.replace( /\n/g, '<br>' );	
-	
 			var desc = $('*[name="major_sub_array[6][0]"]').val();
 			
+
+			for ( let i of this.w_list3 ) {
+				let expression = new RegExp( '('+i+':?)', 'gi' );
+
+				desc = desc.replace( expression, '' ); 
+				desc_br = desc_br.replace( expression, '<span style="color: #00f137"><b>$1</b></span>' ); 
+			}
+
+			desc = desc.replace( /[ ]{2,}/g, ' ' ); 
+			desc = desc.replace( /[\n]{2,}/g, "\n" ); 
+			desc = desc.replace( /\*/gi, '' ); 
+			desc_br = desc_br.replace( /\*/gi, '<span style="color: #00f137"><b>*</b></span>' ); 
+			desc = desc.replace( /&quot;/gi, '' ); 
+			desc_br = desc_br.replace( /\&quot;/gi, '<span style="color: #00f137"><b>&quot;</b></span>' ); 
+			desc = desc.replace( /&#34;/gi, '' ); 
+			desc_br = desc_br.replace( /\&#34;/gi, '<span style="color: #00f137"><b>&#34;</b></span>' ); 
+			desc = desc.replace( /[\"]/ig, '' );
+
+			desc_br = desc_br.replace( /\n/g, '<br>' );	
+
 			if ( desc.match(/полная/i) || desc.match(/полный день/i) || desc.match(/полная занятость/i) ) {
 				
 				desc = desc.replace( /полная занятость/i, '' ); 
@@ -545,9 +601,20 @@ hydra = {
 		// выводим должность для редактирования
 		if ( $('*[name="major_sub_array[2][0]"]').length > 0 ) {
 			var desc_br = $('*[name="major_sub_array[2][0]"]').parent().text().replace( /^\n/, '' );
+			var desc = $('*[name="major_sub_array[2][0]"]').val();
+
+			desc = desc.replace( /[ ]{2,}/g, ' ' ); 
+			desc = desc.replace( /[\n]{2,}/g, "\n" ); 
+			desc = desc.replace( /\*/gi, '' ); 
+			desc_br = desc_br.replace( /\*/gi, '<span style="color: #00f137"><b>*</b></span>' ); 
+			desc = desc.replace( /&quot;/gi, '' ); 
+			desc_br = desc_br.replace( /\&quot;/gi, '<span style="color: #00f137"><b>&quot;</b></span>' ); 
+			desc = desc.replace( /&#34;/gi, '' ); 
+			desc_br = desc_br.replace( /\&#34;/gi, '<span style="color: #00f137"><b>&#34;</b></span>' ); 
+			desc = desc.replace( /[\"]/ig, '' );
+
 			desc_br = desc_br.replace( /\n/g, '<br>' );	
 	
-			var desc = $('*[name="major_sub_array[2][0]"]').val();
 						
 			$('*[name="major_sub_array[2][0]"]').parent().html( '<textarea name="major_sub_array[2][0]" style="display: block; width: 100%; height: 140px; margin: 10px 0px;">'+desc+'</textarea>');
 		}
@@ -562,10 +629,20 @@ hydra = {
 		// выводим водительские права для редактирования
 		if ( $('*[name="major_sub_array[21][0]"]').length > 0 ) {
 			var desc_br = $('*[name="major_sub_array[21][0]"]').parent().text().replace( /^\n/, '' );
-			desc_br = desc_br.replace( /\n/g, '<br>' );	
-	
 			var desc = $('*[name="major_sub_array[21][0]"]').val();
-						
+			
+			desc = desc.replace( /[ ]{2,}/g, ' ' ); 
+			desc = desc.replace( /[\n]{2,}/g, "\n" ); 
+			desc = desc.replace( /\*/gi, '' ); 
+			desc_br = desc_br.replace( /\*/gi, '<span style="color: #00f137"><b>*</b></span>' ); 
+			desc = desc.replace( /&quot;/gi, '' ); 
+			desc_br = desc_br.replace( /\&quot;/gi, '<span style="color: #00f137"><b>&quot;</b></span>' ); 
+			desc = desc.replace( /&#34;/gi, '' ); 
+			desc_br = desc_br.replace( /\&#34;/gi, '<span style="color: #00f137"><b>&#34;</b></span>' ); 
+			desc = desc.replace( /[\"]/ig, '' );
+			
+			desc_br = desc_br.replace( /\n/g, '<br>' );
+
 			$('*[name="major_sub_array[21][0]"]').parent().html( '<textarea name="major_sub_array[21][0]" style="display: block; width: 100%; height: 140px; margin: 10px 0px;">'+desc+'</textarea>');
 		} else {
 			$('.major_id_class_label_21').parent().parent().find('dd ul').append( '<textarea name="major_sub_array[21][0]" style="display: block; width: 100%; height: 140px; margin: 10px 0px;"></textarea>' );
